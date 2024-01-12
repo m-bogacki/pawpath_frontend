@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  body {
-    @apply bg-background dark:to-darkText;
-  }
-
   .footer {
     @apply flex;
   }
@@ -19,7 +15,7 @@
   }
 
   nav hr {
-    @apply text-background bg-white w-full;
+    @apply w-full;
   }
 
   .logo {
@@ -28,6 +24,10 @@
 
   form input,
   form select {
-    @apply w-[240px] p-1 bg-transparent text-white border-solid border-2 rounded-md focus:outline-none;
+    @apply w-[240px] p-1 bg-transparent  border-solid border-2 rounded-md focus:outline-none;
+  }
+  .leaflet-div-icon {
+    background: transparent !important;
+    border: none !important;
   }
 }

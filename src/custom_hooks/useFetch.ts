@@ -1,36 +1,45 @@
-import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import { useCallback, useState } from "react";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { TFetchResponse } from "../types/Fetching";
 
 const BASE_URL = "http://localhost:8000/api/";
 
-type Method = "POST" | "GET" | "PUT" | "DELETE";
+type Method = "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
 
-export default function useFetch(
-  url: string,
-  method: Method,
-  body?: Object
-): any {
-  const [data, setData] = useState(null);
+export default function useFetch<T>(): TFetchResponse<T> {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(undefined);
+  const [requestData, setRequestData] = useState<T | T[]>();
 
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .request({
-        url: url,
-        method: method,
-        baseURL: BASE_URL,
-      })
-      .then((res: AxiosResponse) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [url, method]);
-  return { data, loading, error };
+  const sendRequest = useCallback(
+    (
+      requestConfig: AxiosRequestConfig,
+      callbackFunction?: (data?: T) => {} | undefined
+    ): void => {
+      setLoading(true);
+      axios
+        .request({
+          baseURL: BASE_URL,
+          ...requestConfig,
+        })
+        .then((res: AxiosResponse) => {
+          if (res.status >= 200 && res.status < 300) {
+            setRequestData(res.data);
+            callbackFunction && callbackFunction(res.data);
+          } else {
+            throw Error(res.data);
+          }
+        })
+        .catch((err) => {
+          setError(err);
+          console.error(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    []
+  );
+
+  return { loading, error, requestData, sendRequest };
 }

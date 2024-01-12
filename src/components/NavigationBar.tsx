@@ -5,11 +5,13 @@ import {
   faHome,
   faX,
   faHamburger,
+  faMap,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import OutsideAlerter from "../custom_hooks/OutsideAlerter";
+import ThemeSwitcher from "./ThemeSwitcher";
+import NavItem from "./NavItem";
 
 import Footer from "./Footer";
 
@@ -26,7 +28,7 @@ export default function NavigationBar() {
 
   return (
     <OutsideAlerter onClickOutside={() => toggleMenu(true)}>
-      <nav className="absolute top-0 left-0 z-50">
+      <nav className="absolute top-0 z-50 bg-transparent ">
         {/* Top Bar */}
         <div className="flex relative justify-between items-center pr-10 min-h-[80px] w-screen bg-transparent z-30">
           <FontAwesomeIcon
@@ -49,27 +51,21 @@ export default function NavigationBar() {
         {/* Side Menu */}
 
         <div
-          className={`flex flex-col absolute top-0 left-0 h-screen justify-between items-center ${
+          className={`flex flex-col absolute top-0 left-0 min-h-screen justify-between items-center ${
             menuOpen ? "translate-x-0" : "translate-x-[-100rem]"
           } px-1 pt-20 text-background bg-darkText z-20 w-screen sm:w-[300px]  transition-transform duration-500 ease-in-out`}
         >
           <div className="flex flex-col gap-4 items-center">
             <div className="nav-links flex flex-col items-center justify-center mr-1 lg:transition-transform">
-              <NavLink to={"/"}>
-                <FontAwesomeIcon
-                  className="h-7 w-7  hover:text-secondAccent"
-                  icon={faHome}
-                />
-                Home
-              </NavLink>
+              <NavItem icon={faHome} label="Home" redirectTo="/"></NavItem>
               <hr />
-              <NavLink to={"/dogs"}>
-                <FontAwesomeIcon
-                  className="h-7 w-7 hover:text-secondAccent"
-                  icon={faDog}
-                />
-                Dogs
-              </NavLink>
+              <NavItem
+                icon={faDog}
+                label="My Dogs"
+                redirectTo="/dogs"
+              ></NavItem>
+              <hr />
+              <NavItem icon={faMap} label="Map" redirectTo="/map" />
             </div>
           </div>
           <div className="flex flex-col items-center">
@@ -77,6 +73,7 @@ export default function NavigationBar() {
               className="h-7 w-7 mb-3 p-3 lg:hover:rotate-45 lg:hover:text-secondAccent duration-300 lg:transition-all cursor-pointer"
               icon={faGear}
             />
+            <ThemeSwitcher></ThemeSwitcher>
             <Footer />
           </div>
         </div>

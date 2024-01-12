@@ -1,25 +1,26 @@
-import React from "react";
-import Footer from "./components/Footer";
-import { Routes, Route } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Dogs from "./pages/Dogs";
-import NavigationBar from "./components/NavigationBar";
+import Animals from "./pages/Animals";
+import Map from "./pages/Map";
+import RootLayout from "./pages/Root";
+import ErrorPage from "./pages/Error";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/dogs", element: <Animals /> },
+      { path: "/map", element: <Map /> },
+    ],
+    errorElement: <ErrorPage />,
+  },
+]);
 
 function App() {
-  return (
-    <>
-      <NavigationBar />
-      <div className="flex wrapper w-screen h-screen">
-        <div className="flex flex-col flex-auto w-full h-full pt-[80px] bg-background">
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/dogs" element={<Dogs />}></Route>
-          </Routes>
-        </div>
-      </div>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
