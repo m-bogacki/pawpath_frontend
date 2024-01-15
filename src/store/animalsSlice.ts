@@ -1,11 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { types } from "util";
-import { TAnimal } from "../types/Animal";
+import { TAnimal, TAnimalCare } from "../types/Animal";
 
 const animalsInitialState = {
   animals: [],
+  animalCare: [],
 } as {
   animals: TAnimal[];
+  animalCare: TAnimalCare[];
 };
 
 const animalsSlice = createSlice({
@@ -25,9 +27,13 @@ const animalsSlice = createSlice({
     setAnimals(state, action: PayloadAction<TAnimal[]>) {
       state.animals = action.payload;
     },
+    setAnimalCareList(state, action: PayloadAction<TAnimalCare[]>) {
+      state.animalCare = action.payload;
+    },
   },
 });
 
-export const { deleteAnimal, setAnimals, addAnimal } = animalsSlice.actions;
+export const { deleteAnimal, setAnimals, addAnimal, setAnimalCareList } =
+  animalsSlice.actions;
 
 export default animalsSlice.reducer;

@@ -10,7 +10,7 @@ export default function AnimalCard({
 }) {
   return (
     <div
-      className="w-[80%] w-[400px] bg-gray-400 rounded-2xl hover:backdrop-blur-md hover:shadow-xl hover:bg-gray-200 transition-all overflow-hidden"
+      className="w-[80%] md:w-[300px] h-[400px] bg-neutral rounded-lg hover:backdrop-blur-md shadow-sm hover:shadow-lg transition-all overflow-hidden"
       key={animal.id?.toString()}
     >
       <img

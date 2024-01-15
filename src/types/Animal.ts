@@ -9,6 +9,7 @@ type TAnimal = {
   care_instructions?: TCareInstructions;
 };
 type TSpecies = "DOG" | "CAT";
+
 type TCareInstructions = {
   id?: number;
   number_of_walks_per_day: number;
@@ -16,7 +17,9 @@ type TCareInstructions = {
   food_amount: number;
   additional_instructions: string;
 };
+
 type TAnimalCareStatus = "New" | "Ongoing" | "Finished";
+
 type TAnimalCare = {
   id: number;
   animal: TAnimal;

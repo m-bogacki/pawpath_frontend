@@ -19,7 +19,7 @@ export default function AnimalList({ animals }: { animals: TAnimal[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-y-12 align-middle w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-5 gap-y-12 gap-x-20  ">
         {animals.map((animal, index) => {
           return (
             <AnimalCard

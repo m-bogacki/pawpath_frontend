@@ -6,8 +6,10 @@ import { faDog } from "@fortawesome/free-solid-svg-icons";
 
 export default function AnimalCareMarker({
   animalCare,
+  onClick,
 }: {
   animalCare: TAnimalCare;
+  onClick?: () => void;
 }) {
   const latitude = animalCare.animal.owner?.address?.latitude;
   const longitude = animalCare.animal.owner?.address?.longitude;
@@ -19,6 +21,7 @@ export default function AnimalCareMarker({
       eventHandlers={{
         click: (e) => {
           console.log(e.latlng);
+          onClick && onClick();
         },
       }}
     ></Marker>
