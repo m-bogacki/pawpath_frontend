@@ -5,8 +5,9 @@ import Animals from "./pages/Animals";
 import Map from "./pages/Map";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/Error";
+import Auth from "./pages/Auth";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <Map />,
+      },
+      {
+        path: "/auth",
+        element: <Auth />,
       },
     ],
     errorElement: <ErrorPage />,

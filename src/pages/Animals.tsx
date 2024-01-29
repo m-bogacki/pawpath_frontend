@@ -4,7 +4,7 @@ import AnimalList from "../features/animals/components/AnimalsList";
 import { useAppSelector } from "../store/hooks";
 import useFetch from "../custom_hooks/useFetch";
 import { useEffect, useState } from "react";
-import { TAnimal } from "../types/Animal";
+import { TAnimal } from "../Types/Animal";
 import { AppDispatch } from "../store";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";

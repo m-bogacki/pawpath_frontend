@@ -26,7 +26,7 @@ export default function ThemeSwitcher() {
         width="20"
         height="20"
         viewBox="0 0 24 24"
-        fill="none"
+        fill={theme === "light" ? "white" : "none"}
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -47,7 +47,7 @@ export default function ThemeSwitcher() {
         width="20"
         height="20"
         viewBox="0 0 24 24"
-        fill="none"
+        fill={theme === "dark" ? "white" : "none"}
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"

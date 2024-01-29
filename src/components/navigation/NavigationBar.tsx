@@ -6,18 +6,26 @@ import {
   faX,
   faHamburger,
   faMap,
+  faSignOut,
+  faSignIn,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import OutsideAlerter from "../custom_hooks/OutsideAlerter";
+import { useCallback, useState } from "react";
+import OutsideAlerter from "../../custom_hooks/OutsideAlerter";
 import ThemeSwitcher from "./ThemeSwitcher";
 import NavItem from "./NavItem";
 
-import Footer from "./Footer";
+import Footer from "../Footer";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import SideMenuWrapper from "./SideMenuWrapper";
+import UserAvatar from "./UserAvatar";
+import { logout } from "../../store/authSlice";
 
 export default function NavigationBar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  console.log("rerender");
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const toggleMenu = (outsideClick: boolean) => {
     if (outsideClick && !menuOpen) {
       setMenuOpen(false);
@@ -25,6 +33,10 @@ export default function NavigationBar() {
       setMenuOpen((prevState) => !prevState);
     }
   };
+
+  const handleLogout = useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
 
   return (
     <OutsideAlerter onClickOutside={() => toggleMenu(true)}>
@@ -38,23 +50,13 @@ export default function NavigationBar() {
               toggleMenu(false);
             }}
           ></FontAwesomeIcon>
-
-          <img
-            draggable={false}
-            className="h-14 w-14 ring-2 ring-white rounded-full bg-cover"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt="user avatar"
-          />
+          {isAuthenticated && <UserAvatar />}
         </div>
         {/* END Top Bar */}
 
         {/* Side Menu */}
 
-        <div
-          className={`flex flex-col absolute top-0 left-0 min-h-screen justify-between items-center ${
-            menuOpen ? "translate-x-0" : "translate-x-[-100rem]"
-          } px-1 pt-20 text-background bg-darkText z-20 w-screen sm:w-[300px]  transition-transform duration-500 ease-in-out`}
-        >
+        <SideMenuWrapper menuOpen={menuOpen}>
           <div className="flex flex-col gap-4 items-center">
             <div className="nav-links flex flex-col items-center justify-center mr-1 lg:transition-transform">
               <NavItem icon={faHome} label="Home" redirectTo="/"></NavItem>
@@ -66,17 +68,40 @@ export default function NavigationBar() {
               ></NavItem>
               <hr />
               <NavItem icon={faMap} label="Map" redirectTo="/map" />
+              <hr />
+              {isAuthenticated ? (
+                <NavItem icon={faUser} label="User" redirectTo="/myAccount" />
+              ) : (
+                <>
+                  <NavItem
+                    icon={faSignIn}
+                    label="Login"
+                    redirectTo="/auth?mode=login"
+                  />
+                </>
+              )}
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <FontAwesomeIcon
-              className="h-7 w-7 mb-3 p-3 lg:hover:rotate-45 lg:hover:text-secondAccent duration-300 lg:transition-all cursor-pointer"
-              icon={faGear}
-            />
+            {isAuthenticated && (
+              <>
+                <FontAwesomeIcon
+                  className="h-7 w-7 mb-3 p-3 lg:hover:rotate-45 lg:hover:text-secondAccent duration-300 lg:transition-all cursor-pointer"
+                  icon={faGear}
+                />
+
+                <button onClick={handleLogout}>
+                  <FontAwesomeIcon
+                    className="h-7 w-7 mb-3 p-3 lg:hover:text-secondAccent"
+                    icon={faSignOut}
+                  />
+                </button>
+              </>
+            )}
             <ThemeSwitcher></ThemeSwitcher>
             <Footer />
           </div>
-        </div>
+        </SideMenuWrapper>
         {/* END Side Menu */}
       </nav>
     </OutsideAlerter>

@@ -22,7 +22,7 @@ type TAnimalCareStatus = "New" | "Ongoing" | "Finished";
 
 type TAnimalCare = {
   id: number;
-  animal: TAnimal;
+  animals: TAnimal[];
   start_date: string;
   end_date: string;
   status: TAnimalCareStatus;

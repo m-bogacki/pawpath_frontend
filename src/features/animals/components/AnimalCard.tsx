@@ -1,5 +1,5 @@
 import HoverSlideButton from "../../../components/HoverSlideButton";
-import { TAnimal } from "../../../types/Animal";
+import { TAnimal } from "../../../Types/Animal";
 
 export default function AnimalCard({
   animal,
@@ -21,6 +21,8 @@ export default function AnimalCard({
       />
       <div className="flex flex-col h-[50%] items-center justify-between">
         <h3>{animal.name}</h3>
+        <h3>{animal.id}</h3>
+
         <div className="flex justify-evenly ">
           <HoverSlideButton
             onClick={() => {}}
