@@ -4,16 +4,10 @@ import { AppDispatch } from "../../../store";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { deleteAnimal } from "../../../store/animalsSlice";
-import useFetch from "../../../custom_hooks/useFetch";
 
 export default function AnimalList({ animals }: { animals: TAnimal[] }) {
   const dispatch: AppDispatch = useDispatch<Dispatch>();
-  const { sendRequest } = useFetch<TAnimal[]>();
   const handleDelete = (animal: TAnimal) => {
-    sendRequest({
-      url: `animals/${animal.id?.toString()}`,
-      method: "DELETE",
-    });
     dispatch(deleteAnimal(animal));
   };
 

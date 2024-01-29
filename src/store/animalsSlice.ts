@@ -33,6 +33,46 @@ export const addAnimal = createAsyncThunk(
   }
 );
 
+export const deleteAnimal = createAsyncThunk(
+  "animals/delete",
+  async (animal: TAnimal, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      if (!animal.id) throw Error("Missing Animal ID");
+      const response = await toast.promise(
+        AnimalAPI.deleteAnimal(animal.id),
+        {
+          success: `${animal.name} has been deleted`,
+          error: "Encountered an issue during deleting animal",
+          pending: "Deleting...",
+        },
+        { position: "bottom-right" }
+      );
+      return fulfillWithValue(response);
+    } catch (error: any) {
+      return rejectWithValue(error.detail);
+    }
+  }
+);
+
+export const fetchAnimals = createAsyncThunk(
+  "animals/",
+  async (_, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response = await toast.promise(
+        AnimalAPI.fetchAnimals(),
+        {
+          error: "Encountered an issue during fetching animals",
+          pending: "Fetching Animals...",
+        },
+        { position: "bottom-right" }
+      );
+      return fulfillWithValue(response);
+    } catch (error: any) {
+      return rejectWithValue(error.detail);
+    }
+  }
+);
+
 const animalsSlice = createSlice({
   name: "animals",
   initialState: animalsInitialState,
@@ -55,22 +95,43 @@ const animalsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
+    builder // ADD ANIMALS ACTIONS /////////////////////////////////////////
       .addCase(addAnimal.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(addAnimal.fulfilled, (state, action: any) => {
         state.isLoading = false;
-        console.log(action.payload);
         state.animals.push(action.payload.data);
       })
       .addCase(addAnimal.rejected, (state, action: any) => {
+        state.isLoading = false;
+      }) //DELETE ANIMALS ACTIONS /////////////////////////////////////////
+      .addCase(deleteAnimal.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAnimal.fulfilled, (state, action: any) => {
+        state.isLoading = false;
+        const newAnimals = state.animals.slice();
+        const animalToDeleteIndex = newAnimals.indexOf(action.payload);
+        newAnimals.splice(animalToDeleteIndex, 1);
+        state.animals = newAnimals;
+      })
+      .addCase(deleteAnimal.rejected, (state, action: any) => {
+        state.isLoading = false;
+      }) // FETCH ANIMALS ACTIONS /////////////////////////////////////////
+      .addCase(fetchAnimals.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAnimals.fulfilled, (state, action: any) => {
+        state.isLoading = false;
+        state.animals = action.payload.data;
+      })
+      .addCase(fetchAnimals.rejected, (state, action: any) => {
         state.isLoading = false;
       });
   },
 });
 
-export const { deleteAnimal, setAnimals, setAnimalCareList } =
-  animalsSlice.actions;
+export const { setAnimals, setAnimalCareList } = animalsSlice.actions;
 
 export default animalsSlice.reducer;

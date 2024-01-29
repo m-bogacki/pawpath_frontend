@@ -15,7 +15,6 @@ const requestInterceptor = instance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
       config.headers["Content-Type"] = "application/json";
     }
-    console.log(config.headers);
     return config;
   },
   (error) => {
@@ -42,6 +41,9 @@ const AuthAPI = {
     instance.interceptors.request.eject(requestInterceptor);
     return instance.post("api/token/", credentials);
   },
+  fetchUser: (userId: number) => {
+    return instance.get(`api/users/${userId}`);
+  },
 };
 
 const AnimalAPI = {
@@ -50,6 +52,8 @@ const AnimalAPI = {
 
   deleteAnimal: (animalId: number) =>
     instance.delete(`api/animals/${animalId}`),
+
+  fetchAnimals: () => instance.get("api/animals/"),
 };
 
 export { AuthAPI, AnimalAPI };

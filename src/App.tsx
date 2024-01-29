@@ -6,6 +6,7 @@ import Map from "./pages/Map";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/Error";
 import Auth from "./pages/Auth";
+import useAuth from "./custom_hooks/useAuth";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,8 @@ export const router = createBrowserRouter([
 ]);
 
 function App() {
+  useAuth();
+
   return <RouterProvider router={router} />;
 }
 

@@ -13,10 +13,12 @@ import { useAppSelector } from "../../../store/hooks";
 
 export default function NewAnimalForm({ onClose }: ComponentProps<any>) {
   const isLoading = useAppSelector((state) => state.animals.isLoading);
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const dispatch: AppDispatch = useDispatch<Dispatch>();
 
   const { register, handleSubmit } = useForm<TAnimal>();
   const onSubmit: SubmitHandler<TAnimal> = async (data) => {
+    console.log(data);
     dispatch(addAnimal(data));
     onClose();
   };
@@ -42,18 +44,15 @@ export default function NewAnimalForm({ onClose }: ComponentProps<any>) {
             </label>
             <input {...register("weight")} name="weight" required />
           </span>
-          <span className="flex items-center  gap-10">
-            <label htmlFor="name" className="max-w-[30px]">
-              Owner
-            </label>
-            <input
-              type="number"
-              defaultValue={1}
-              {...register("owner", { required: true })}
-              name="owner"
-              required
-            />
-          </span>
+
+          <input
+            type="number"
+            className="hidden"
+            defaultValue={userId}
+            {...register("owner", { required: true })}
+            name="owner"
+            required
+          />
           <span className="flex items-center  gap-10">
             <label htmlFor="species" className="max-w-[30px]">
               Species

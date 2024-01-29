@@ -1,13 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { TAuth, TCredentials } from "../Types/Auth";
 import { AuthAPI } from "../api/client";
 import { toast } from "react-toastify";
 import { getInitialAuthData } from "../utils/utilityFunctions";
+import { TUser } from "../Types/User";
 
 const initialState: TAuth = {
   ...getInitialAuthData(),
   isLoading: false,
   error: null,
+  user: null,
 };
 
 export const login = createAsyncThunk(
@@ -39,8 +41,12 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.refresh = null;
       state.error = null;
+      state.user = null;
       localStorage.removeItem("token");
       localStorage.removeItem("refresh");
+    },
+    setLoggedUser(state, action: PayloadAction<TUser>) {
+      state.user = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -65,6 +71,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setLoggedUser } = authSlice.actions;
 
 export default authSlice.reducer;

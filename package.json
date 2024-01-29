@@ -31,6 +31,8 @@
     "react-router-dom": "^6.17.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.4",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.5",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "toast": "^0.5.4",
