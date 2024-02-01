@@ -8,7 +8,7 @@ import { AuthAPI } from "../api/client";
 import { get } from "http";
 import { TUser } from "../Types/User";
 
-function getCustomMarkerIcon(fontAwesomeIcon: IconDefinition): DivIcon {
+function getFontAwesomeMarkerIcon(fontAwesomeIcon: IconDefinition): DivIcon {
   const iconMarkup = renderToStaticMarkup(
     <FontAwesomeIcon
       className="w-full h-full text-secondAccent hover:text-primaryAccent"
@@ -56,7 +56,7 @@ function getInitialAuthData(): TInitialAuthData {
 }
 
 export {
-  getCustomMarkerIcon,
+  getFontAwesomeMarkerIcon,
   getInitialAuthData,
   extractUserId,
   getUser,

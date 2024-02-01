@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface HoverSlideButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -6,23 +6,29 @@ interface HoverSlideButtonProps {
   bgColor?: String;
   icon?: any;
   disabled?: boolean;
+  type?: "submit" | "reset" | "button" | undefined;
+  children?: ReactNode;
+  className?: string;
 }
 
 export default function HoverSlideButton({
   onClick,
   label,
-  bgColor = "primary",
+  bgColor = "secondary",
   icon,
   disabled,
+  type,
+  children,
+  className,
 }: HoverSlideButtonProps) {
   return (
     <button
-      className={`btn w-32 h-12 rounded-lg relative btn-accent btn-outline outline-primary overflow-hidden`}
+      className={`btn px-10 border-none text-neutral bg-${bgColor} hover:bg-accent ${className}`}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
-      {label}
-      {icon}
+      {children}
     </button>
   );
 }

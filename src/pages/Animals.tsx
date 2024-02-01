@@ -16,6 +16,7 @@ export default function Animals() {
   const loading = useAppSelector((state) => state.animals.isLoading);
 
   const animals: TAnimal[] = useAppSelector((state) => state.animals.animals);
+
   useEffect(() => {
     dispatch(fetchAnimals());
   }, [dispatch]);
@@ -23,11 +24,12 @@ export default function Animals() {
   return (
     <>
       <div className="h-[10%] min-h-[80px] w-full flex items-center justify-between pr-8">
-        <div className="h-full w-[300px] bg-white"></div>
-        <HoverSlideButton
-          onClick={() => setNewAnimalFormOpen(true)}
-          label="Add Dog"
-        ></HoverSlideButton>
+        <div className="h-full w-[300px] flex justify-center items-center">
+          <p className="text-2xl">My Animals</p>
+        </div>
+        <HoverSlideButton onClick={() => setNewAnimalFormOpen(true)}>
+          Add dog
+        </HoverSlideButton>
       </div>
       {loading && <LoadingSpinner />}
       {!loading && (

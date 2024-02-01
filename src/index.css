@@ -6,16 +6,16 @@
   .footer {
     @apply flex;
   }
-  .active {
-    @apply text-secondAccent;
-  }
 
   .nav-links a {
-    @apply flex flex-col items-center align-middle py-4 px-4 hover:text-secondAccent transition-colors w-64;
+    @apply flex flex-col items-center align-middle py-4 px-4  text-secondary hover:text-accent transition-colors w-64;
+  }
+  .nav-links a.active {
+    @apply text-accent;
   }
 
   nav hr {
-    @apply w-full;
+    @apply w-full select-secondary;
   }
 
   .logo {

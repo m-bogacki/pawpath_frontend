@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TCredentials } from "../Types/Auth";
+import { TCredentials, TRegister, TToken } from "../Types/Auth";
 import { TAnimal } from "../Types/Animal";
 import { isExpired } from "react-jwt";
 
@@ -22,24 +22,18 @@ const requestInterceptor = instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    console.log(error);
-    return Promise.reject(error.response.data);
-  }
-);
-
 const AuthAPI = {
   login: (credentials: TCredentials) => {
     instance.interceptors.request.eject(requestInterceptor);
     return instance.post("api/token/", credentials);
+  },
+  refreshToken: (refresh: TToken) => {
+    instance.interceptors.request.eject(requestInterceptor);
+    return instance.post("api/token/refresh/", { refresh: refresh });
+  },
+  signup: (credentials: TRegister) => {
+    instance.interceptors.request.eject(requestInterceptor);
+    return instance.post("api/users/create/", credentials);
   },
   fetchUser: (userId: number) => {
     return instance.get(`api/users/${userId}`);
@@ -55,5 +49,7 @@ const AnimalAPI = {
 
   fetchAnimals: () => instance.get("api/animals/"),
 };
+
+const AnimalCareAPI = {};
 
 export { AuthAPI, AnimalAPI };

@@ -13,10 +13,7 @@ export default function NavItem({
 }) {
   return (
     <NavLink to={redirectTo}>
-      <FontAwesomeIcon
-        className="h-6 w-6  hover:text-secondAccent"
-        icon={icon}
-      />
+      <FontAwesomeIcon className="h-6 w-6" icon={icon} />
       {label}
     </NavLink>
   );

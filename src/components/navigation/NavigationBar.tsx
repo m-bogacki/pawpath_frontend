@@ -8,6 +8,8 @@ import {
   faMap,
   faSignOut,
   faSignIn,
+  faBurger,
+  faNavicon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useState } from "react";
@@ -44,8 +46,8 @@ export default function NavigationBar() {
         {/* Top Bar */}
         <div className="flex relative justify-between items-center pr-10 min-h-[80px] w-screen bg-transparent z-30">
           <FontAwesomeIcon
-            className="ml-7 p-3 text-2xl cursor-pointer text-secondAccent"
-            icon={menuOpen ? faX : faHamburger}
+            className="ml-7 p-3 text-2xl cursor-pointer text-accent"
+            icon={menuOpen ? faX : faNavicon}
             onClick={() => {
               toggleMenu(false);
             }}
@@ -63,8 +65,8 @@ export default function NavigationBar() {
               <hr />
               <NavItem
                 icon={faDog}
-                label="My Dogs"
-                redirectTo="/dogs"
+                label="My Animals"
+                redirectTo="/animals"
               ></NavItem>
               <hr />
               <NavItem icon={faMap} label="Map" redirectTo="/map" />

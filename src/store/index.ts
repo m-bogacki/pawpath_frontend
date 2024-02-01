@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import animalsReducer from "./animalsSlice";
 import authReducer from "./authSlice";
+import animalCareReducer from "./animalCareSlice";
 
 const store = configureStore({
-  reducer: { animals: animalsReducer, auth: authReducer },
+  reducer: {
+    animals: animalsReducer,
+    auth: authReducer,
+    animalCare: animalCareReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

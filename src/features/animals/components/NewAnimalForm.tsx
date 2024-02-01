@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { addAnimal } from "../../../store/animalsSlice";
 import { useAppSelector } from "../../../store/hooks";
+import HoverSlideButton from "../../../components/HoverSlideButton";
 // import { addAnimal } from "../../../store/animalsSlice";
 
 export default function NewAnimalForm({ onClose }: ComponentProps<any>) {
@@ -62,17 +63,13 @@ export default function NewAnimalForm({ onClose }: ComponentProps<any>) {
               <option value="Cat">Cat</option>
             </select>
           </span>
-          <button
-            type="submit"
-            className="border-solid border-secondAccent border-2 rounded-md  hover:bg-black hover:text-background cursor-pointer mt-5"
-            disabled={isLoading}
-          >
+          <HoverSlideButton type="submit" disabled={isLoading}>
             {isLoading ? (
               <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
             ) : (
               "Prześlij"
             )}
-          </button>
+          </HoverSlideButton>
         </form>
       </OutsideAlerter>
     </div>

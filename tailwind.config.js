@@ -5,14 +5,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "#EAEAEA",
-        primaryAccent: "#08D9D6",
-        secondAccent: "#FF2E63",
-        darkText: "#252A34",
-        interactiveElements: "#FFD700",
-        headers: "#000000"
-      },
       aspectRatio: {
         '3/4': '3 / 4',
         '3/5': '3 / 5',
@@ -38,9 +30,9 @@ module.exports = {
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
           primary: "#08D9D6",
-          secondary: "#252A34",
+          secondary: "#EAEAEA",
           accent: "#FF2E63",
-          neutral: "#EAEAEA",
+          neutral: "#252A34",
           "base-100": "#252A34",
         },
       }

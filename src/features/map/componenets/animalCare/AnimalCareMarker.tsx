@@ -1,6 +1,6 @@
 import { Marker } from "react-leaflet";
 import { TAnimalCare } from "../../../../Types/Animal";
-import { getCustomMarkerIcon } from "../../../../utils/utilityFunctions";
+import { getFontAwesomeMarkerIcon } from "../../../../utils/utilityFunctions";
 import "../../../../index.css";
 import { faDog } from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +17,7 @@ export default function AnimalCareMarker({
   return (
     <Marker
       position={[latitude, longitude]}
-      icon={getCustomMarkerIcon(faDog)}
+      icon={getFontAwesomeMarkerIcon(faDog)}
       eventHandlers={{
         click: (e) => {
           console.log(e.latlng);

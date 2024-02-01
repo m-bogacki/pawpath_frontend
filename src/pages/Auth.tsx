@@ -1,20 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../features/auth/componenets/AuthForm";
-import { useAppSelector } from "../store/hooks";
 import { useEffect } from "react";
+import { useAppSelector } from "../store/hooks";
 
 function Auth() {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
   useEffect(() => {
     isAuthenticated && navigate("/");
-  }, [navigate, isAuthenticated]);
-
+  }, [isAuthenticated, navigate]);
   return (
     <>
       <section
         id="intro"
-        className="w-full h-full bg-secondary flex justify-center items-center"
+        className="w-full h-full flex justify-center items-center"
       >
         <AuthForm></AuthForm>
       </section>

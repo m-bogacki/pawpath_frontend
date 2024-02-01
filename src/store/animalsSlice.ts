@@ -5,11 +5,9 @@ import { toast } from "react-toastify";
 
 const animalsInitialState = {
   animals: [],
-  animalCare: [],
   isLoading: false,
 } as {
   animals: TAnimal[];
-  animalCare: TAnimalCare[];
   isLoading: boolean;
 };
 
@@ -66,8 +64,11 @@ export const fetchAnimals = createAsyncThunk(
         },
         { position: "bottom-right" }
       );
+      console.log(response);
+
       return fulfillWithValue(response);
     } catch (error: any) {
+      console.log(error);
       return rejectWithValue(error.detail);
     }
   }
@@ -89,9 +90,6 @@ const animalsSlice = createSlice({
     // },
     setAnimals(state, action: PayloadAction<TAnimal[]>) {
       state.animals = action.payload;
-    },
-    setAnimalCareList(state, action: PayloadAction<TAnimalCare[]>) {
-      state.animalCare = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -132,6 +130,6 @@ const animalsSlice = createSlice({
   },
 });
 
-export const { setAnimals, setAnimalCareList } = animalsSlice.actions;
+export const { setAnimals } = animalsSlice.actions;
 
 export default animalsSlice.reducer;

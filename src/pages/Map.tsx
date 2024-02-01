@@ -2,20 +2,20 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { TAnimalCare } from "../Types/Animal";
-import { setAnimalCareList } from "../store/animalsSlice";
 import AnimalCareMarker from "../features/map/componenets/animalCare/AnimalCareMarker";
-import LoadingSpinner from "../components/LoadingSpinner";
-import SideMenu from "../features/map/componenets/map/SideMenu";
+
+import SideMenu from "../features/map/componenets/SideMenu";
 
 export default function Map() {
   const dispatch = useAppDispatch();
-  const animalCareList = useAppSelector((state) => state.animals.animalCare);
+  const animalCareList = useAppSelector(
+    (state) => state.animalCare.animalCareList
+  );
   const [selectedAnimalCare, setSelectedAnimalCare] = useState<number>();
 
-  useEffect(() => {
-    // dispatch(setAnimalCareList(animalCares));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(setAnimalCareList());
+  // }, [dispatch]);
 
   return (
     <>

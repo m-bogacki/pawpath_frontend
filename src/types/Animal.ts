@@ -18,13 +18,20 @@ type TCareInstructions = {
   additional_instructions: string;
 };
 
+type TOffer = {
+  id?: number;
+  status: string;
+  carrer: TUser;
+};
+
 type TAnimalCareStatus = "New" | "Ongoing" | "Finished";
 
 type TAnimalCare = {
   id: number;
+  offers: TOffer[];
   animals: TAnimal[];
-  start_date: string;
-  end_date: string;
+  start_date: Date;
+  end_date: Date;
   status: TAnimalCareStatus;
 };
 
@@ -34,4 +41,5 @@ export type {
   TCareInstructions,
   TAnimalCareStatus,
   TAnimalCare,
+  TOffer,
 };

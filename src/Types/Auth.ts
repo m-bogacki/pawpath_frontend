@@ -8,6 +8,10 @@ export type TCredentials = {
 export type TRegister = {
   username: string;
   password: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
 };
 
 export type TAuth = {
@@ -15,7 +19,7 @@ export type TAuth = {
   refresh: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: string | null;
+  error: any;
   user: TUser | null;
 };
 
