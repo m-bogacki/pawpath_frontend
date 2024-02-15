@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { TAnimal, TAnimalCare } from "../Types/Animal";
+import { TAnimal } from "../Types/Animal";
 import { AnimalAPI } from "../api/client";
 import { toast } from "react-toastify";
 
-const animalsInitialState = {
+const initialState = {
   animals: [],
   isLoading: false,
 } as {
@@ -64,11 +64,9 @@ export const fetchAnimals = createAsyncThunk(
         },
         { position: "bottom-right" }
       );
-      console.log(response);
 
       return fulfillWithValue(response);
     } catch (error: any) {
-      console.log(error);
       return rejectWithValue(error.detail);
     }
   }
@@ -76,18 +74,8 @@ export const fetchAnimals = createAsyncThunk(
 
 const animalsSlice = createSlice({
   name: "animals",
-  initialState: animalsInitialState,
+  initialState,
   reducers: {
-    deleteAnimal(state, action: PayloadAction<TAnimal>) {
-      const newAnimals = state.animals.slice();
-      const animalToDeleteIndex = newAnimals.indexOf(action.payload);
-      newAnimals.splice(animalToDeleteIndex, 1);
-      state.animals = newAnimals;
-    },
-    // addAnimal(state, action: PayloadAction<TAnimal>) {
-    //   const animal = action.payload;
-    //   state.animals.push(animal);
-    // },
     setAnimals(state, action: PayloadAction<TAnimal[]>) {
       state.animals = action.payload;
     },
@@ -108,11 +96,12 @@ const animalsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteAnimal.fulfilled, (state, action: any) => {
-        state.isLoading = false;
-        const newAnimals = state.animals.slice();
-        const animalToDeleteIndex = newAnimals.indexOf(action.payload);
-        newAnimals.splice(animalToDeleteIndex, 1);
+        const animalToDelete = action.payload.data;
+        const newAnimals = state.animals.filter(
+          (animal) => animal.id !== animalToDelete.id
+        );
         state.animals = newAnimals;
+        state.isLoading = false;
       })
       .addCase(deleteAnimal.rejected, (state, action: any) => {
         state.isLoading = false;

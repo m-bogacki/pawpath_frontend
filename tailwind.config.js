@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: true,
   content: [
     "./src/**/*.{js,jsx,ts,tsx,css}",
   ],
@@ -26,6 +27,8 @@ module.exports = {
           "accent": "#FF2E63",
           "neutral": "#EAEAEA",
           "base-100": "#EAEAEA",
+          "dark": "#252A34"
+
         },
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
@@ -34,6 +37,7 @@ module.exports = {
           accent: "#FF2E63",
           neutral: "#252A34",
           "base-100": "#252A34",
+          "dark": "#252A34"
         },
       }
     ]

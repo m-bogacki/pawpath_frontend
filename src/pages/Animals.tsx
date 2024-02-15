@@ -3,19 +3,18 @@ import HoverSlideButton from "../components/HoverSlideButton";
 import AnimalList from "../features/animals/components/AnimalsList";
 import { useAppSelector } from "../store/hooks";
 import { useEffect, useState } from "react";
-import { TAnimal } from "../Types/Animal";
 import { AppDispatch } from "../store";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { fetchAnimals } from "../store/animalsSlice";
 import LoadingSpinner from "../components/LoadingSpinner";
+import PageFunctionalTopBar from "../components/PageFunctionalTopBar";
 
 export default function Animals() {
   const dispatch: AppDispatch = useDispatch<Dispatch>();
   const [newAnimalFormOpen, setNewAnimalFormOpen] = useState(false);
   const loading = useAppSelector((state) => state.animals.isLoading);
-
-  const animals: TAnimal[] = useAppSelector((state) => state.animals.animals);
+  const animals = useAppSelector((state) => state.animals.animals);
 
   useEffect(() => {
     dispatch(fetchAnimals());
@@ -23,18 +22,15 @@ export default function Animals() {
 
   return (
     <>
-      <div className="h-[10%] min-h-[80px] w-full flex items-center justify-between pr-8">
-        <div className="h-full w-[300px] flex justify-center items-center">
-          <p className="text-2xl">My Animals</p>
-        </div>
+      <PageFunctionalTopBar label="My Animals">
         <HoverSlideButton onClick={() => setNewAnimalFormOpen(true)}>
           Add dog
         </HoverSlideButton>
-      </div>
+      </PageFunctionalTopBar>
       {loading && <LoadingSpinner />}
-      {!loading && (
+      {!loading && animals && (
         <>
-          <div className="h-full w-full flex justify-center items-center">
+          <div className="h-full w-full flex justify-center overflow-auto">
             <AnimalList animals={animals} />
           </div>
         </>

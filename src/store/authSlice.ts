@@ -4,9 +4,7 @@ import { AuthAPI } from "../api/client";
 import { toast } from "react-toastify";
 import { getInitialAuthData } from "../utils/utilityFunctions";
 import { TUser } from "../Types/User";
-import { create } from "domain";
 import { isExpired } from "react-jwt";
-import { act } from "react-dom/test-utils";
 
 const initialState: TAuth = {
   ...getInitialAuthData(),
@@ -28,6 +26,7 @@ export const login = createAsyncThunk(
         },
         { position: "bottom-right" }
       );
+
       return fulfillWithValue(response);
     } catch (error: any) {
       return rejectWithValue(error.detail);
@@ -96,17 +95,15 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action: any) => {
-        console.log(action);
-        state.isLoading = false;
         state.token = action.payload.data.access;
         state.refresh = action.payload.data.refresh;
+        state.isAuthenticated = true;
         state.error = null;
         localStorage.setItem("token", action.payload.data.access);
         localStorage.setItem("refresh", action.payload.data.refresh);
-        state.isAuthenticated = true;
+        state.isLoading = false;
       })
       .addCase(login.rejected, (state, action: any) => {
-        console.log(action);
         state.isLoading = false;
         state.error = action.payload;
       })

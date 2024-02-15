@@ -1,8 +1,8 @@
 import { Form, Link, useNavigate, useSearchParams } from "react-router-dom";
-import { SubmitErrorHandler, useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../../../store/hooks";
 import { login, signup } from "../../../store/authSlice";
-import { TCredentials, TRegister } from "../../../Types/Auth";
+import { TRegister } from "../../../Types/Auth";
 import FormInput from "../../../components/forms/FormInput";
 
 type FormData = TRegister;
@@ -77,7 +77,7 @@ export default function AuthForm() {
         <FormInput
           register={register}
           identifier="username"
-          text="Username"
+          placeholder="Username"
           type="text"
           error={errors["username"]?.message}
         />
@@ -85,7 +85,7 @@ export default function AuthForm() {
         <FormInput
           register={register}
           identifier="password"
-          text="Password"
+          placeholder="Password"
           type="password"
           error={errors["password"]?.message}
         />
@@ -94,34 +94,34 @@ export default function AuthForm() {
             <FormInput
               register={register}
               identifier="confirmPassword"
-              text="Confirm Password"
+              placeholder="Confirm Password"
               type="password"
             />
             <FormInput
               register={register}
               identifier="email"
-              text="Email"
+              placeholder="Email"
               type="email"
               error={errors["email"]?.message}
             />
             <FormInput
               register={register}
               identifier="first_name"
-              text="First Name"
+              placeholder="First Name"
               type="text"
               error={errors["first_name"]?.message}
             />
             <FormInput
               register={register}
               identifier="last_name"
-              text="Last Name"
+              placeholder="Last Name"
               type="text"
               error={errors["last_name"]?.message}
             />
             <FormInput
               register={register}
               identifier="phone_number"
-              text="Phone Number"
+              placeholder="Phone Number"
               type="text"
               error={errors["phone_number"]?.message}
             />

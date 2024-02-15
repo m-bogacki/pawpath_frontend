@@ -7,7 +7,8 @@ import ErrorPage from "./pages/Error";
 import Auth from "./pages/Auth";
 import PrivateRoutes from "./pages/routes/PrivateRoutes";
 import PublicRoutes from "./pages/routes/PublicRoutes";
-import useAutoLogin from "./custom_hooks/useAutoLogin";
+import AnimalCareEdit from "./pages/AnimalCareEdit";
+import AnimalEdit from "./pages/AnimalEdit";
 
 export const router = createBrowserRouter([
   {
@@ -16,17 +17,27 @@ export const router = createBrowserRouter([
         children: [
           {
             element: <PrivateRoutes />,
-            children: [{ path: "/animals", element: <Animals /> }],
-          },
-          {
-            path: "/",
-            element: <PublicRoutes />,
             children: [
-              { path: "/", element: <Home /> },
+              {
+                path: "/animals",
+                element: <Animals />,
+              },
+              {
+                path: "/animals/:id",
+                element: <AnimalEdit />,
+              },
               {
                 path: "/map",
                 element: <Map />,
               },
+              { path: "/animalCare/:id", element: <AnimalCareEdit /> }, // Added nested route for animalCare
+            ],
+          },
+          {
+            element: <PublicRoutes />,
+            children: [
+              { path: "/", element: <Home /> },
+
               {
                 path: "/auth",
                 element: <Auth />,

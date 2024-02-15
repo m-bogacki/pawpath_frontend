@@ -9,14 +9,13 @@ import { get } from "http";
 import { TUser } from "../Types/User";
 
 function getFontAwesomeMarkerIcon(fontAwesomeIcon: IconDefinition): DivIcon {
-  const iconMarkup = renderToStaticMarkup(
-    <FontAwesomeIcon
-      className="w-full h-full text-secondAccent hover:text-primaryAccent"
-      icon={fontAwesomeIcon}
-    ></FontAwesomeIcon>
-  );
   const customMarkerIcon = divIcon({
-    html: iconMarkup,
+    html: renderToStaticMarkup(
+      <FontAwesomeIcon
+        className="w-full h-full text-accent"
+        icon={fontAwesomeIcon}
+      ></FontAwesomeIcon>
+    ),
     iconSize: [30, 30],
   });
 
@@ -55,10 +54,19 @@ function getInitialAuthData(): TInitialAuthData {
   return initialAuthData;
 }
 
+function capitalize(string: string) {
+  return normalizeWord(string.charAt(0).toUpperCase() + string.slice(1));
+}
+
+function normalizeWord(string: string) {
+  return string.replace("_", " ");
+}
+
 export {
   getFontAwesomeMarkerIcon,
   getInitialAuthData,
   extractUserId,
   getUser,
   getLoggedUser,
+  capitalize,
 };

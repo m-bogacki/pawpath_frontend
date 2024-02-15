@@ -23,7 +23,7 @@ export default function HoverSlideButton({
 }: HoverSlideButtonProps) {
   return (
     <button
-      className={`btn px-10 border-none text-neutral bg-${bgColor} hover:bg-accent ${className}`}
+      className={`btn px-8 h-10 border-none text-neutral bg-${bgColor} hover:bg-accent ${className}`}
       onClick={onClick}
       disabled={disabled}
       type={type}

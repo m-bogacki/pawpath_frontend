@@ -8,7 +8,7 @@ function Auth() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    isAuthenticated && navigate("/");
+    isAuthenticated && navigate("/", { replace: true });
   }, [isAuthenticated, navigate]);
   return (
     <>

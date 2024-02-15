@@ -1,13 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HoverSlideButton from "../../../components/HoverSlideButton";
 import { TAnimal } from "../../../Types/Animal";
-import {
-  faDeleteLeft,
-  faEdit,
-  faTrash,
-  faTrashAlt,
-  faTrashArrowUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function AnimalCard({
   animal,
@@ -16,9 +11,11 @@ export default function AnimalCard({
   animal: TAnimal;
   onDelete: (animal: TAnimal) => void;
 }) {
+  const navigate = useNavigate();
+
   return (
     <div
-      className="w-[80%] md:w-[300px] h-[400px] bg-neutral rounded-lg hover:backdrop-blur-md shadow-lg transition-all overflow-hidden"
+      className="w-[80%] md:w-[300px] h-[400px] bg-neutral rounded-lg shadow-[0px_0px_0px_4px] shadow-secondary/20 hover:shadow-[0px_0px_20px_4px] hover:shadow-secondary/50  transition-all overflow-hidden"
       key={animal.id?.toString()}
     >
       <img
@@ -40,8 +37,12 @@ export default function AnimalCard({
             <p>{animal.weight} KG</p>
           </div>
         </div>
-        <div className="flex w-full justify-evenly">
-          <HoverSlideButton onClick={() => {}}>
+        <div className="flex w-full justify-evenly mb-4">
+          <HoverSlideButton
+            onClick={() => {
+              navigate(`/animals/${animal.id}`, { state: animal });
+            }}
+          >
             <FontAwesomeIcon icon={faEdit} />
           </HoverSlideButton>
           <HoverSlideButton onClick={() => onDelete(animal)}>

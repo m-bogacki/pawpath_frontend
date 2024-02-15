@@ -20,6 +20,7 @@ type TCareInstructions = {
 
 type TOffer = {
   id?: number;
+  description: string;
   status: string;
   carrer: TUser;
 };
@@ -33,6 +34,7 @@ type TAnimalCare = {
   start_date: Date;
   end_date: Date;
   status: TAnimalCareStatus;
+  price: number;
 };
 
 export type {

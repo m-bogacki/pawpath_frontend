@@ -1,15 +1,21 @@
-import axios from "axios";
 import { TCredentials, TRegister, TToken } from "../Types/Auth";
-import { TAnimal } from "../Types/Animal";
+import { TAnimal, TAnimalCare } from "../Types/Animal";
 import { isExpired } from "react-jwt";
+import axios, { AxiosInstance } from "axios";
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   baseURL: "http://localhost:8000",
 });
 
-const requestInterceptor = instance.interceptors.request.use(
+const tokenFreeUrls = ["api/token/", "api/token/refresh/", "api/users/create/"];
+
+instance.interceptors.request.use(
   (config) => {
+    if (config.url && tokenFreeUrls.includes(config.url)) {
+      return config;
+    }
     const token = localStorage.getItem("token");
+    console.log(token);
     if (!token) throw Error("There is no token");
     if (token && !isExpired(token) && config) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,19 +30,16 @@ const requestInterceptor = instance.interceptors.request.use(
 
 const AuthAPI = {
   login: (credentials: TCredentials) => {
-    instance.interceptors.request.eject(requestInterceptor);
     return instance.post("api/token/", credentials);
   },
   refreshToken: (refresh: TToken) => {
-    instance.interceptors.request.eject(requestInterceptor);
     return instance.post("api/token/refresh/", { refresh: refresh });
   },
   signup: (credentials: TRegister) => {
-    instance.interceptors.request.eject(requestInterceptor);
     return instance.post("api/users/create/", credentials);
   },
   fetchUser: (userId: number) => {
-    return instance.get(`api/users/${userId}`);
+    return instance.get(`api/users/${userId}/`);
   },
 };
 
@@ -47,9 +50,19 @@ const AnimalAPI = {
   deleteAnimal: (animalId: number) =>
     instance.delete(`api/animals/${animalId}`),
 
-  fetchAnimals: () => instance.get("api/animals/"),
+  fetchAnimals: () => {
+    return instance.get("api/animals/");
+  },
 };
 
-const AnimalCareAPI = {};
+const AnimalCareAPI = {
+  fetchAnimalCareList: () => instance.get("api/animal-care/"),
+  createAnimalCare: (animalCare: TAnimalCare) =>
+    instance.post("api/animal-care/create/", animalCare),
+  deleteAnimalCare: (animalCareId: number) =>
+    instance.delete(`api/animal-care/${animalCareId}/`),
+  fetchAnimalCare: (animalCareId: number) =>
+    instance.get(`api/animal-care/${animalCareId}/`),
+};
 
-export { AuthAPI, AnimalAPI };
+export { AuthAPI, AnimalAPI, AnimalCareAPI };

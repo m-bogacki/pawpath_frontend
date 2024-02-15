@@ -4,12 +4,12 @@ import RootLayout from "../Root";
 import useAutoLogin from "../../custom_hooks/useAutoLogin";
 
 export default function PrivateRoutes() {
-  const isToken = useAppSelector((state) => state.auth.token);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   useAutoLogin();
 
   return (
     <RootLayout>
-      {isToken ? <Outlet /> : <Navigate to="/auth?mode=login" />}
+      {isAuthenticated ? <Outlet /> : <Navigate to="/auth?mode=login" />}
     </RootLayout>
   );
 }
