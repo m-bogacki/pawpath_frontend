@@ -13,7 +13,7 @@ export default function AnimalList({ animals }: { animals: TAnimal[] }) {
 
   return (
     <>
-      <div className="lg:p-32 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-y-12 gap-x-20">
+      <div className="p-6 grid sm:grid-cols-1 lg:grid-cols-2 gap-y-12 gap-x-20">
         {animals.map((animal, index) => {
           return (
             <AnimalCard key={index} animal={animal} onDelete={handleDelete} />

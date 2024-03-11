@@ -1,15 +1,15 @@
 import { TCredentials, TRegister, TToken } from "../Types/Auth";
-import { TAnimal, TAnimalCare } from "../Types/Animal";
+import { TAnimal, TAnimalCare, TOffer } from "../Types/Animal";
 import { isExpired } from "react-jwt";
 import axios, { AxiosInstance } from "axios";
 
-const instance: AxiosInstance = axios.create({
+const httpClient: AxiosInstance = axios.create({
   baseURL: "http://localhost:8000",
 });
 
 const tokenFreeUrls = ["api/token/", "api/token/refresh/", "api/users/create/"];
 
-instance.interceptors.request.use(
+httpClient.interceptors.request.use(
   (config) => {
     if (config.url && tokenFreeUrls.includes(config.url)) {
       return config;
@@ -30,39 +30,70 @@ instance.interceptors.request.use(
 
 const AuthAPI = {
   login: (credentials: TCredentials) => {
-    return instance.post("api/token/", credentials);
+    return httpClient.post("api/token/", credentials);
   },
   refreshToken: (refresh: TToken) => {
-    return instance.post("api/token/refresh/", { refresh: refresh });
+    return httpClient.post("api/token/refresh/", { refresh: refresh });
   },
   signup: (credentials: TRegister) => {
-    return instance.post("api/users/create/", credentials);
+    return httpClient.post("api/users/create/", credentials);
   },
   fetchUser: (userId: number) => {
-    return instance.get(`api/users/${userId}/`);
+    return httpClient.get(`api/users/${userId}/`);
   },
 };
 
 const AnimalAPI = {
   createAnimal: (animal: TAnimal) =>
-    instance.post("api/animals/create/", animal),
+    httpClient.post("api/animals/create/", animal),
 
   deleteAnimal: (animalId: number) =>
-    instance.delete(`api/animals/${animalId}`),
+    httpClient.delete(`api/animals/${animalId}/`),
+  updateAnimal: (animalId: number, data: any) => {
+    return httpClient.patch(`api/animals/${animalId}/`, data);
+  },
+  updateCareInstructions: (animalId: number, data: any) => {
+    return httpClient.patch(
+      `api/animals/${animalId}/update-care-instructions/`,
+      data
+    );
+  },
 
-  fetchAnimals: () => {
-    return instance.get("api/animals/");
+  fetchAnimalList: () => {
+    return httpClient.get("api/animals/");
+  },
+  fetchAnimal: (animalId: number) => {
+    return httpClient.get(`api/animals/${animalId}/`);
   },
 };
 
 const AnimalCareAPI = {
-  fetchAnimalCareList: () => instance.get("api/animal-care/"),
+  fetchAnimalCareList: () => httpClient.get("api/animal-care/"),
   createAnimalCare: (animalCare: TAnimalCare) =>
-    instance.post("api/animal-care/create/", animalCare),
+    httpClient.post("api/animal-care/create/", animalCare),
   deleteAnimalCare: (animalCareId: number) =>
-    instance.delete(`api/animal-care/${animalCareId}/`),
+    httpClient.delete(`api/animal-care/${animalCareId}/`),
   fetchAnimalCare: (animalCareId: number) =>
-    instance.get(`api/animal-care/${animalCareId}/`),
+    httpClient.get(`api/animal-care/${animalCareId}/`),
+  makeOffer: (animalCareId: number, description: Partial<TOffer>) =>
+    httpClient.post(`api/animal-care/${animalCareId}/make-offer/`, {
+      description,
+    }),
+  acceptOffer: (offerId: number) => {
+    return httpClient.get(`api/animal-care/offer/${offerId}/accept/`);
+  },
+  declineOffer: (offerId: number) => {
+    return httpClient.get(`api/animal-care/offer/${offerId}/decline/`);
+  },
 };
 
-export { AuthAPI, AnimalAPI, AnimalCareAPI };
+const UserAPI = {
+  updateUser: (userId: number, data: any) => {
+    return httpClient.patch(`api/users/${userId}/`, data);
+  },
+  updateUserAddress: (userId: number, data: any) => {
+    return httpClient.patch(`api/users/${userId}/update-address/`, data);
+  },
+};
+
+export { AuthAPI, AnimalAPI, AnimalCareAPI, UserAPI };

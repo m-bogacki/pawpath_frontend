@@ -6,7 +6,6 @@ import { setLoggedUser } from "../../store/authSlice";
 import { getLoggedUser } from "../../utils/utilityFunctions";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { log } from "console";
 
 export default function PublicRoutes() {
   const dispatch = useAppDispatch();

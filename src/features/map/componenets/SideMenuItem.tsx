@@ -20,36 +20,38 @@ const SideMenuItem: React.FC<SideMenuItemProps> = ({
   navigate,
 }) => {
   return (
-    <div
-      className={`flex overflow-hidden transition-all duration-500 ${
-        selectedAnimalCare === animalCare.id
-          ? "h-32 bg-neutral-500 first:rounded-t-lg last:rounded-b-lg"
-          : "h-24"
-      }`}
-    >
-      <div className="flex w-3/4 text-secondary p-4">
-        <div className="w-full">
-          <p className="font-bold">Animals</p>
-          {animalCare.animals.map((animal) => (
-            <p key={animal.id}>{animal.name}</p>
-          ))}
+    <>
+      <div
+        className={`flex overflow-hidden transition-all duration-500 ${
+          selectedAnimalCare === animalCare.id
+            ? "h-32first:rounded-t-lg last:rounded-b-lg"
+            : "h-24"
+        }`}
+      >
+        <div className="flex w-3/4 text-secondary p-4">
+          <div className="w-full">
+            <p className="font-bold">Animals</p>
+            {animalCare.animals.map((animal) => (
+              <p key={animal.id}>{animal.name}</p>
+            ))}
+          </div>
+          <div className="w-full">
+            <p className="font-bold">Owner</p>
+            <p>
+              {`${animalCare.animals[0].owner.first_name}
+             ${animalCare.animals[0].owner.last_name}`}
+            </p>
+          </div>
         </div>
-        <div className="w-full">
-          <p className="font-bold">Owner</p>
-          <p>
-            {animalCare.animals[0].owner.first_name}
-            {animalCare.animals[0].owner.last_name}
-          </p>
+        <div className="flex h-full flex-grow items-start p-4">
+          <HoverSlideButton
+            onClick={onClickViewHandle.bind(null, animalCare, navigate)}
+          >
+            View
+          </HoverSlideButton>
         </div>
       </div>
-      <div className="flex h-full flex-grow items-start p-4">
-        <HoverSlideButton
-          onClick={onClickViewHandle.bind(null, animalCare, navigate)}
-        >
-          View
-        </HoverSlideButton>
-      </div>
-    </div>
+    </>
   );
 };
 

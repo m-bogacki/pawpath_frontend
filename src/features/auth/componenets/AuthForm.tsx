@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../../store/hooks";
 import { login, signup } from "../../../store/authSlice";
 import { TRegister } from "../../../Types/Auth";
 import FormInput from "../../../components/forms/FormInput";
+import { setLoggedUser } from "../../../store/authSlice";
 
 type FormData = TRegister;
 
@@ -48,6 +49,7 @@ export default function AuthForm() {
     }
     if (!isLogin) {
       const response: any = await dispatch(signup(data as TRegister));
+      setLoggedUser(response.payload);
       if (!response.error) {
         navigate("/");
       } else {

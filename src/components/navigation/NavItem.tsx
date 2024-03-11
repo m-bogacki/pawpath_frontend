@@ -12,9 +12,12 @@ export default function NavItem({
   redirectTo: string;
 }) {
   return (
-    <NavLink to={redirectTo}>
-      <FontAwesomeIcon className="h-6 w-6" icon={icon} />
-      {label}
+    <NavLink
+      to={redirectTo}
+      className="relative text-acc before:transition-transform before:absolute before:h-14 before:w-28 before:bg-accent before:left-12 before:top-3 hover:before:translate-x-[22px]"
+    >
+      <FontAwesomeIcon className="h-6 w-6 z-10" icon={icon} />
+      <span className="z-10">{label}</span>
     </NavLink>
   );
 }

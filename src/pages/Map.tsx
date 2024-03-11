@@ -6,7 +6,7 @@ import AnimalCareMarker from "../features/map/componenets/AnimalCareMarker";
 
 import SideMenu from "../features/map/componenets/SideMenu";
 import { fetchAnimalCareList } from "../store/animalCareSlice";
-import { fetchAnimals } from "../store/animalsSlice";
+import { fetchAnimalList } from "../store/animalsSlice";
 
 export default function Map() {
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ export default function Map() {
   const [selectedAnimalCare, setSelectedAnimalCare] = useState<number>();
   useEffect(() => {
     dispatch(fetchAnimalCareList());
-    dispatch(fetchAnimals());
+    dispatch(fetchAnimalList());
   }, [dispatch]);
   return (
     <>

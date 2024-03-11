@@ -1,10 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { TAuth, TCredentials, TRegister, TToken } from "../Types/Auth";
-import { AuthAPI } from "../api/client";
+import { AuthAPI, UserAPI } from "../api/client";
 import { toast } from "react-toastify";
 import { getInitialAuthData } from "../utils/utilityFunctions";
-import { TUser } from "../Types/User";
 import { isExpired } from "react-jwt";
+import { TUser } from "../Types/User";
+import { TAddress } from "../Types/Address";
+import { AxiosResponse } from "axios";
 
 const initialState: TAuth = {
   ...getInitialAuthData(),
@@ -14,7 +16,7 @@ const initialState: TAuth = {
 };
 
 export const login = createAsyncThunk(
-  "user/login",
+  "auth/login",
   async (credentials: TCredentials, { fulfillWithValue, rejectWithValue }) => {
     try {
       const response = await toast.promise(
@@ -35,7 +37,7 @@ export const login = createAsyncThunk(
 );
 
 export const signup = createAsyncThunk(
-  "user/register",
+  "auth/register",
   async (credentials: TRegister, { fulfillWithValue, rejectWithValue }) => {
     try {
       const response = await toast.promise(
@@ -55,7 +57,7 @@ export const signup = createAsyncThunk(
 );
 
 export const autoLogin = createAsyncThunk(
-  "user/autologin",
+  "auth/autologin",
   async (refresh: TToken, { fulfillWithValue, rejectWithValue }) => {
     if (isExpired(refresh)) {
       toast.error("Refresh Token is expired, you need to Sign in again.");
@@ -66,6 +68,39 @@ export const autoLogin = createAsyncThunk(
       return fulfillWithValue(response.data.access);
     } catch (err: any) {
       return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateUserData = createAsyncThunk(
+  "user/updateUserData",
+  async (
+    { userId, userData }: { userId: number; userData: Partial<TUser> },
+    { fulfillWithValue, rejectWithValue }
+  ) => {
+    try {
+      const response = await UserAPI.updateUser(userId, userData);
+
+      return fulfillWithValue(response);
+    } catch (error: any) {
+      return rejectWithValue(error.detail);
+    }
+  }
+);
+export const updateUserAddress = createAsyncThunk(
+  "user/updateUserAddress",
+  async (
+    { userId, userAddress }: { userId: number; userAddress: Partial<TAddress> },
+    { fulfillWithValue, rejectWithValue }
+  ) => {
+    try {
+      const response = await UserAPI.updateUserAddress(userId, userAddress);
+
+      return fulfillWithValue(response);
+    } catch (error: any) {
+      console.log(error);
+
+      return rejectWithValue(error.detail);
     }
   }
 );
@@ -82,11 +117,11 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("refresh");
     },
-    setLoggedUser(state, action: PayloadAction<TUser>) {
-      state.user = action.payload;
-    },
     setError(state, action: PayloadAction<string>) {
       state.error = action.payload;
+    },
+    setLoggedUser(state, action: PayloadAction<Partial<TUser>>) {
+      state.user = action.payload as TUser;
     },
   },
   extraReducers: (builder) => {
@@ -128,10 +163,40 @@ const authSlice = createSlice({
       })
       .addCase(autoLogin.rejected, (state) => {
         logout();
+      })
+      .addCase(updateUserData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateUserData.fulfilled,
+        (state, action: PayloadAction<AxiosResponse>) => {
+          state.isLoading = false;
+          state.user = { ...state.user, ...action.payload.data };
+          toast.success("User data updated");
+        }
+      )
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("User data update failed");
+      })
+      .addCase(updateUserAddress.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateUserAddress.fulfilled,
+        (state, action: PayloadAction<AxiosResponse<TAddress>>) => {
+          state.isLoading = false;
+          state.user = { ...state.user!, address: action.payload.data };
+          toast.success("User address updated");
+        }
+      )
+      .addCase(updateUserAddress.rejected, (state, action) => {
+        state.isLoading = false;
+        toast.error("User address update failed");
       });
   },
 });
 
-export const { logout, setLoggedUser, setError } = authSlice.actions;
+export const { logout, setError, setLoggedUser } = authSlice.actions;
 
 export default authSlice.reducer;

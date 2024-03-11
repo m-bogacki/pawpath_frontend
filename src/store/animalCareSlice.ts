@@ -1,13 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { TAnimalCare } from "../Types/Animal";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { TAnimalCare, TOffer } from "../Types/Animal";
 import { AnimalCareAPI } from "../api/client";
 import { toast } from "react-toastify";
+import { AxiosResponse } from "axios";
 
 const initialState = {
   animalCareList: [],
+  viewedAnimalCare: null,
   isLoading: false,
 } as {
   animalCareList: TAnimalCare[];
+  viewedAnimalCare: TAnimalCare | null;
   isLoading: boolean;
 };
 
@@ -98,6 +101,80 @@ export const deleteAnimalCare = createAsyncThunk(
     }
   }
 );
+
+export const makeOffer = createAsyncThunk(
+  "animalsCare/make-offer",
+  async (
+    {
+      animalCareId,
+      description,
+    }: { animalCareId: number; description: Partial<TOffer> },
+    { fulfillWithValue, rejectWithValue }
+  ) => {
+    try {
+      const response = await toast.promise(
+        AnimalCareAPI.makeOffer(animalCareId, description),
+        {
+          success: "Sent Offer successfully",
+          error:
+            "Encountered an issue during sending offer to animal care advertisement",
+          pending: "Sending Offer...",
+        },
+        { position: "bottom-right" }
+      );
+
+      return fulfillWithValue(response.data);
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue(error.detail);
+    }
+  }
+);
+
+export const acceptOffer = createAsyncThunk(
+  "animalsCare/accept-offer",
+  async (offerId: number, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response = await toast.promise(
+        AnimalCareAPI.acceptOffer(offerId),
+        {
+          success: "Accepted Offer successfully",
+          error:
+            "Encountered an issue during accepting offer to animal care advertisement",
+          pending: "Accepting Offer...",
+        },
+        { position: "bottom-right" }
+      );
+
+      return fulfillWithValue(response.data);
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue(error.detail);
+    }
+  }
+);
+export const declineOffer = createAsyncThunk(
+  "animalsCare/decline-offer",
+  async (offerId: number, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response = await toast.promise(
+        AnimalCareAPI.declineOffer(offerId),
+        {
+          success: "Declined Offer successfully",
+          error:
+            "Encountered an issue during declining offer to animal care advertisement",
+          pending: "Declining Offer...",
+        },
+        { position: "bottom-right" }
+      );
+
+      return fulfillWithValue(response.data);
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue(error.detail);
+    }
+  }
+);
 /**
  * Represents the animal care slice of the store.
  */
@@ -148,10 +225,65 @@ const animalCareSlice = createSlice({
       .addCase(fetchAnimalCare.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchAnimalCare.fulfilled, (state, action) => {
+      .addCase(
+        fetchAnimalCare.fulfilled,
+        (state, action: PayloadAction<TAnimalCare>) => {
+          state.isLoading = false;
+          state.viewedAnimalCare = action.payload;
+        }
+      )
+      .addCase(fetchAnimalCare.rejected, (state) => {
         state.isLoading = false;
       })
-      .addCase(fetchAnimalCare.rejected, (state) => {
+      .addCase(makeOffer.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(makeOffer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(state.viewedAnimalCare);
+        const newOffers = [...state.viewedAnimalCare!.offers, action.payload];
+        state.viewedAnimalCare = {
+          ...state.viewedAnimalCare!,
+          offers: newOffers,
+        };
+      })
+      .addCase(makeOffer.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(acceptOffer.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(acceptOffer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const newOffers = state.viewedAnimalCare!.offers.map((offer) => {
+          if (offer.id === action.payload.id) {
+            return action.payload;
+          }
+          return offer;
+        });
+        state.viewedAnimalCare = {
+          ...state.viewedAnimalCare!,
+          status: "Ongoing",
+          offers: newOffers,
+        };
+      })
+      .addCase(acceptOffer.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(declineOffer.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(declineOffer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const newOffers = state.viewedAnimalCare!.offers.filter(
+          (offer) => offer.id !== action.payload.id
+        );
+        state.viewedAnimalCare = {
+          ...state.viewedAnimalCare!,
+          offers: newOffers,
+        };
+      })
+      .addCase(declineOffer.rejected, (state) => {
         state.isLoading = false;
       });
   },

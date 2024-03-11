@@ -9,6 +9,7 @@ import PrivateRoutes from "./pages/routes/PrivateRoutes";
 import PublicRoutes from "./pages/routes/PublicRoutes";
 import AnimalCareEdit from "./pages/AnimalCareEdit";
 import AnimalEdit from "./pages/AnimalEdit";
+import MyAccount from "./pages/MyAccount";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,8 @@ export const router = createBrowserRouter([
                 path: "/map",
                 element: <Map />,
               },
-              { path: "/animalCare/:id", element: <AnimalCareEdit /> }, // Added nested route for animalCare
+              { path: "/animalCare/:id", element: <AnimalCareEdit /> },
+              { path: "/myAccount", element: <MyAccount /> },
             ],
           },
           {

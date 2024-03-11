@@ -22,22 +22,22 @@ module.exports = {
       {
         light: {
           ...require("daisyui/src/theming/themes")["light"],
-          "primary": "#08D9D6",
-          "secondary": "#252A34",
-          "accent": "#FF2E63",
-          "neutral": "#EAEAEA",
-          "base-100": "#EAEAEA",
-          "dark": "#252A34"
+          primary: "#08D9D6",
+          secondary: "#252A34",
+          accent: "#ffd102",
+          neutral: "#F7F7F7",
+          "accent-content": "#252A34",
+          "base-100": "#F7F7F7",
 
         },
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
           primary: "#08D9D6",
-          secondary: "#EAEAEA",
-          accent: "#FF2E63",
+          secondary: "#F7F7F7",
+          accent: "#ffd102",
           neutral: "#252A34",
+          "accent-content": "#252A34",
           "base-100": "#252A34",
-          "dark": "#252A34"
         },
       }
     ]

@@ -3,6 +3,6 @@ export type TAddress = {
   city: string;
   country: string;
   postal_code: string;
-  latitude: number;
-  longitude: number;
+  latitude: number | string;
+  longitude: number | string;
 };

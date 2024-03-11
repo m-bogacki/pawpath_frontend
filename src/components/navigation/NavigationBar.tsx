@@ -4,11 +4,9 @@ import {
   faDog,
   faHome,
   faX,
-  faHamburger,
   faMap,
   faSignOut,
   faSignIn,
-  faBurger,
   faNavicon,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +26,7 @@ export default function NavigationBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const loggedUser = useAppSelector((state) => state.auth.user);
   const toggleMenu = (outsideClick: boolean) => {
     if (outsideClick && !menuOpen) {
       setMenuOpen(false);
@@ -45,14 +44,17 @@ export default function NavigationBar() {
       <nav className="absolute top-0 z-50 bg-transparent ">
         {/* Top Bar */}
         <div className="flex relative justify-between items-center pr-10 min-h-[80px] w-screen bg-transparent z-30">
-          <FontAwesomeIcon
-            className="ml-7 p-3 text-2xl cursor-pointer text-accent"
-            icon={menuOpen ? faX : faNavicon}
-            onClick={() => {
-              toggleMenu(false);
-            }}
-          ></FontAwesomeIcon>
-          {isAuthenticated && <UserAvatar />}
+          <span className="bg-accent pr-3">
+            <FontAwesomeIcon
+              className="ml-7 p-3 w-6 text-2xl cursor-pointer text-accent-content z-50"
+              icon={menuOpen ? faX : faNavicon}
+              onClick={() => {
+                toggleMenu(false);
+              }}
+            />
+          </span>
+
+          {loggedUser && <UserAvatar />}
         </div>
         {/* END Top Bar */}
 
@@ -65,7 +67,7 @@ export default function NavigationBar() {
               <hr />
               <NavItem
                 icon={faDog}
-                label="My Animals"
+                label="Animals"
                 redirectTo="/animals"
               ></NavItem>
               <hr />

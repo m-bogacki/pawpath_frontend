@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AppDispatch } from "../store";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { fetchAnimals } from "../store/animalsSlice";
+import { fetchAnimalList } from "../store/animalsSlice";
 import LoadingSpinner from "../components/LoadingSpinner";
 import PageFunctionalTopBar from "../components/PageFunctionalTopBar";
 
@@ -17,7 +17,7 @@ export default function Animals() {
   const animals = useAppSelector((state) => state.animals.animals);
 
   useEffect(() => {
-    dispatch(fetchAnimals());
+    dispatch(fetchAnimalList());
   }, [dispatch]);
 
   return (
@@ -30,7 +30,7 @@ export default function Animals() {
       {loading && <LoadingSpinner />}
       {!loading && animals && (
         <>
-          <div className="h-full w-full flex justify-center overflow-auto">
+          <div className="h-full w-full flex justify-center md:items-center overflow-auto">
             <AnimalList animals={animals} />
           </div>
         </>

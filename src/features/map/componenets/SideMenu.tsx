@@ -14,16 +14,19 @@ type SideMenuProps = {
 export default function SideMenu({ selectedAnimalCare }: SideMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const loggedUser = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const animalCareList = useAppSelector(
     (state) => state.animalCare.animalCareList
   );
 
+  const userHaveAddress = loggedUser?.address !== null;
+
   return (
     <>
       <div
-        className={`sm:w-[400px] w-screen z-40 absolute top-0 right-0 bottom-0 ${
-          menuOpen ? "translate-x-[0px]" : "translate-x-[87%]"
+        className={`sm:w-[400px] w-screen z-40 overflow-auto absolute top-0 right-0 bottom-0 ${
+          menuOpen ? "translate-x-[0px]" : "translate-x-[91%]"
         } transition-transform duration-500 ease-in-out bg-neutral text-neutral flex flex-col`}
       >
         <div className="w-full">
@@ -52,23 +55,45 @@ export default function SideMenu({ selectedAnimalCare }: SideMenuProps) {
             })}
           </div>
         </div>
-        <div className="w-full flex justify-evenly items-center py-4">
-          <HoverSlideButton
-            onClick={() => {
-              setFormOpen(true);
-            }}
-          >
-            Add
-          </HoverSlideButton>
-        </div>
+        {userHaveAddress ? (
+          <div className="w-full flex flex-col justify-evenly items-center py-4">
+            <div
+              className={`w-full ${
+                formOpen ? "h-[320px]" : "h-0"
+              } overflow-hidden transition-all duration-500 ease-in-out px-10`}
+            >
+              <NewAnimalForm
+                onClose={() => {
+                  setFormOpen(false);
+                }}
+              />
+            </div>
+            <div className="flex w-full items-center justify-evenly">
+              <HoverSlideButton
+                onClick={() => {
+                  setFormOpen(true);
+                }}
+              >
+                Add
+              </HoverSlideButton>
+              <HoverSlideButton
+                className={`${
+                  formOpen ? "scale-100" : "scale-0 "
+                } transition-all`}
+                onClick={() => {
+                  setFormOpen(false);
+                }}
+              >
+                Close Form
+              </HoverSlideButton>
+            </div>
+          </div>
+        ) : (
+          <p className="text-center m-6 p-2 text-error shadow-md shadow-secondary rounded-lg">
+            Please add your address to add new animal care
+          </p>
+        )}
       </div>
-      {formOpen && (
-        <NewAnimalForm
-          onClose={() => {
-            setFormOpen(false);
-          }}
-        ></NewAnimalForm>
-      )}
     </>
   );
 }

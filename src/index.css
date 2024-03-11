@@ -8,10 +8,13 @@
   }
 
   .nav-links a {
-    @apply flex flex-col items-center align-middle py-4 px-4  text-secondary hover:text-accent transition-colors w-64;
+    @apply flex flex-col items-center align-middle py-4 px-4  text-accent-content transition-colors w-64 !important;
+  }
+  .nav-links a.active:before {
+    @apply text-accent-content translate-x-[22px] rounded-lg !important;
   }
   .nav-links a.active {
-    @apply text-accent;
+    @apply text-accent-content !important;
   }
 
   nav hr {
@@ -43,4 +46,12 @@
   .btn {
     min-height: 1rem;
   }
+
+  .modal-box {
+    @apply max-w-none !important;
+  }
+}
+
+.collapse {
+  visibility: visible !important;
 }

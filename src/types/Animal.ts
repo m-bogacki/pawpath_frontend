@@ -1,11 +1,15 @@
 import { TUser } from "./User";
 
+type AnimalSize = "Small" | "Medium" | "Big" | "Very Big";
+
 type TAnimal = {
   id?: number;
   owner: TUser;
+  image: string;
   name: string;
   species: TSpecies;
   weight: number;
+  size: AnimalSize;
   care_instructions?: TCareInstructions;
 };
 type TSpecies = "DOG" | "CAT";
