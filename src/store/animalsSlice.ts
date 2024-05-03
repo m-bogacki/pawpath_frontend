@@ -30,6 +30,7 @@ export const addAnimal = createAsyncThunk(
       );
       return fulfillWithValue(response);
     } catch (error: any) {
+      console.log(error);
       return rejectWithValue(error.detail);
     }
   }
@@ -53,7 +54,6 @@ export const updateAnimal = createAsyncThunk(
       );
       return fulfillWithValue(response.data);
     } catch (error: any) {
-      console.log(error);
       return rejectWithValue(error.detail);
     }
   }
